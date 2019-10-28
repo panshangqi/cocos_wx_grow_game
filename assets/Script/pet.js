@@ -7,35 +7,54 @@
 // Learn life-cycle callbacks:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] https://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
+const {frame} = require('../libs/frame.js')
+// let Item = cc.Class({
+//     name: 'Item',
+//     properties: {
+//         id: 0,
+//         itemName: ''
+//     }
+// });
 
 cc.Class({
     extends: cc.Component,
 
     properties: {
-        // foo: {
-        //     // ATTRIBUTES:
-        //     default: null,        // The default value will be used only when the component attaching
-        //                           // to a node for the first time
-        //     type: cc.SpriteFrame, // optional, default is typeof default
-        //     serializable: true,   // optional, default is true
+        backButton: cc.Button,
+        // petItems: {
+        //     default: [],
+        //     type: Item
         // },
-        // bar: {
-        //     get () {
-        //         return this._bar;
-        //     },
-        //     set (value) {
-        //         this._bar = value;
-        //     }
-        // },
+        sprite: {
+            default: null,
+            type: cc.Sprite,
+        }
+
     },
 
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {},
+    onLoad () {
+        this.backButton.node.on('click', this.onBackClick, this)
+    },
 
     start () {
+        frame.http.get(frame.util.make_url('/get/all_pets'), {user_info: 1}, function (data) {
+            console.log(data)
+        })
+
+        var url = "test assets/PurpleMonster";
+        cc.loader.loadRes(url, cc.SpriteFrame, function (err, spriteFrame) {
+            var node = new cc.Node("New Sprite");
+            var sprite = node.addComponent(cc.Sprite);
+            sprite.spriteFrame = spriteFrame;
+            node.parent = self.node
+        });
 
     },
 
     // update (dt) {},
+    onBackClick(){
+        cc.director.loadScene("home");
+    }
 });
