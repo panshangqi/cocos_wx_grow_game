@@ -2,10 +2,9 @@
 cc.Class({
     extends: cc.Component,
     properties: {
-        itemName: cc.Label
+        id: 0,
+        //icon: cc.Sprite,
+        itemName: cc.Label,
+        itemPrice: cc.Label
     },
-    //data: {id, itemName, itemPrice, iconSF}
-    init: function (data) {
-        this.itemName = data.itemName
-    }
 });
